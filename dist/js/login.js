@@ -1,0 +1,69 @@
+$(function(){
+	/////帮助中心显示/隐藏start
+	$(".jx-head-icon").hover(function(){
+		$(".jx-head-pop").css({"display":"block"})
+	},function(){
+		$(".jx-head-pop").css({"display":"none"})
+	})
+	$(".jx-head-pop").hover(function(){
+		$(".jx-head-pop").css({"display":"block"})
+	},function(){
+		$(".jx-head-pop").css({"display":"none"})
+	})
+	//帮助中心显示/隐藏end
+	//随机验证码颜色
+	$(".yzm").css({"color":'rgb'+'('+Math.floor(Math.random()*256)+','+Math.floor(Math.random()*256)+','+Math.floor(Math.random()*256)+')'})
+	.text(Math.floor(Math.random()*10000))
+	$(".yzm").click(function(){
+	$(".yzm").css({"color":'rgb'+'('+Math.floor(Math.random()*256)+','+Math.floor(Math.random()*256)+','+Math.floor(Math.random()*256)+')'})
+	$(".yzm").text(Math.floor(Math.random()*10000))
+	$(".yz111").css({"display":"none"})
+	$('input').eq(2).val("")
+	})
+
+	//登录数据验证start
+	$('#tushu_button').click(function(){
+		if($('input').eq(2).val()==$(".yzm").text()){
+			$.post("http://47.104.244.134:8080/userlogin.do",
+			{"name":$('input').eq(0).val(),
+			"password":$('input').eq(1).val()}).done(data=>{
+				if(data.code==0){
+				$.cookie("token",data.data.token,{expires:7})
+					alert('登录成功')
+					location.href="index.html"
+				}else{
+					alert('登录失败')
+				}
+			})
+		}else{
+			$(".yz111").css({"display":"block"})
+		}
+		$.cookie("username",$("input").eq(0).val(),{expires:7})
+		$.cookie("password",$("input").eq(1).val(),{expires:7})
+		
+	})
+	$("#tushu_button666").click(function(){
+	if($("#tushu_button666").prop('checked',true)&&$('input').eq(2).val()==$(".yzm").text()){
+		$.post("http://47.104.244.134:8080/userlogin.do",{"name":$('input').eq(0).val(),
+			"password":$('input').eq(1).val()}).done(data=>{
+				if(data.code==0){
+					$.cookie("token",data.data.token,{expires:7})
+					alert('登录成功')
+					location.href="index.html"
+				}
+			})
+		}else{
+			$(".yz111").css({"display":"block"})
+		}
+		$.cookie("username",$("input").eq(0).val(),{expires:7})
+		$.cookie("password",$("input").eq(1).val(),{expires:7})
+	})
+	//登录数据验证end
+	//从cookie取用户名和密码
+	if($.cookie("username")!=undefined && $.cookie("password")!=undefined){
+		$('input').eq(0).val($.cookie("username"))
+		$('input').eq(1).val($.cookie("password"))
+	}
+})
+
+
